@@ -5,26 +5,48 @@ Licence : Creative commons - CC BY-NC-ND 4.0
 */
 
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-let antiLeaveActive = false;
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('anti-leave')
-    .setDescription("Activates or deactivates anti-leave.")
+    .setDescription("Enable or disable anti-leave for a user.")
     .addUserOption(option =>
-      option.setName('user')
-        .setDescription('The user to apply anti-leave to')
+      option.setName('member')
+        .setDescription('The member to apply anti-leave')
         .setRequired(true))
-    .addBooleanOption(option =>
-      option.setName('activate')
-        .setDescription('Activate or deactivate anti-leave')
+    .addStringOption(option =>
+      option.setName('action')
+        .setDescription('Enable or disable anti-leave')
+        .addChoices(
+          { name: 'Enable', value: 'enable' },
+          { name: 'Disable', value: 'disable' }
+        )
         .setRequired(true)),
-  async execute(interaction) {
-    const user = interaction.options.getUser('user');
-    antiLeaveActive = interaction.options.getBoolean('activate');
+  
+  async execute(interaction, antiLeaveMap) {
+    const user = interaction.options.getUser('member');
+    const action = interaction.options.getString('action');
 
-    const status = antiLeaveActive ? "activated" : "deactivated";
-    const embed = new EmbedBuilder().setColor('#00FF00').setTitle('Anti-Leave Status').setDescription(`Anti-leave has been ${status} for ${user.tag}.`);
-    interaction.reply({ embeds: [embed] });
-  }
+    if (action === 'enable') {
+      const member = await interaction.guild.members.fetch(user.id);
+      if (member.voice.channelId) {
+        antiLeaveMap.set(user.id, member.voice.channelId);
+
+        const embed = new EmbedBuilder()
+          .setColor('#00FF00')
+          .setTitle('Anti-Leave Enabled')
+          .setDescription(`Anti-leave has been enabled for ${user.tag}.`);
+        await interaction.reply({ embeds: [embed], ephemeral: true });
+      } else {
+        await interaction.reply({ content: `${user.tag} needs to be in a voice channel to enable anti-leave.`, ephemeral: true });
+      }
+    } else {
+      antiLeaveMap.delete(user.id);
+      const embed = new EmbedBuilder()
+        .setColor('#FF0000')
+        .setTitle('Anti-Leave Disabled')
+        .setDescription(`Anti-leave has been disabled for ${user.tag}.`);
+      await interaction.reply({ embeds: [embed], ephemeral: true });
+    }
+  },
 };
