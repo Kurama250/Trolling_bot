@@ -47,7 +47,8 @@ nano config.json
 - And you also change this line :
 
 ```json
-  "token": "YOUR_TOKEN"
+  "token": "YOUR_TOKEN",
+  "clientId": "YOUR_CLIENT_ID"
 ```
 
 - After doing this, press CTRL + X and you press Y and ENTER then you do the following commands !
