@@ -36,7 +36,7 @@ apt-get install -y nodejs
 ```shell script
 git clone https://github.com/Kurama250/Trolling_bot.git
 cd Trolling_bot/
-npm i discord.js && npm i pm2 -g
+npm i && npm i pm2 -g
 ```
 ## 2 - on Terminal
 
