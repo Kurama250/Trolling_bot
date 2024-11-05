@@ -11,5 +11,5 @@ else
     echo "Node.js is already installed. Skipping installation."
 fi
 git clone https://github.com/Kurama250/Trolling_bot.git
-cd Alert_directory_V2/
-npm i discord.js && npm i pm2 -g
+cd Trolling_bot/
+npm i && npm i pm2 -g
