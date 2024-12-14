@@ -4,12 +4,22 @@
 
 apt update && apt upgrade -y
 apt install npm nodejs git -y
+
 if ! command -v node &> /dev/null; then
-    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - &&\
-    apt-get install -y nodejs -y
+    echo "Node.js is not installed. Installing..."
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+    apt-get install -y nodejs
 else
     echo "Node.js is already installed. Skipping installation."
 fi
+
 git clone https://github.com/Kurama250/Trolling_bot.git
 cd Trolling_bot/
-npm i && npm i pm2 -g
+npm i
+
+if ! command -v pm2 &> /dev/null; then
+    echo "PM2 is not installed. Installing..."
+    npm install pm2 -g
+else
+    echo "PM2 is already installed. Skipping installation."
+fi
