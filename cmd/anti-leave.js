@@ -4,7 +4,7 @@ Github.com/Kurama250
 Licence : Creative commons - CC BY-NC-ND 4.0
 */
 
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -22,8 +22,12 @@ module.exports = {
           { name: 'Disable', value: 'disable' }
         )
         .setRequired(true)),
-  
+
   async execute(interaction, antiLeaveMap) {
+    if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
+      return await interaction.reply({ content: "You don't have permission to use this command.", ephemeral: true });
+    }
+
     const user = interaction.options.getUser('member');
     const action = interaction.options.getString('action');
 

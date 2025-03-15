@@ -19,6 +19,10 @@ module.exports = {
         .setDescription('The target voice channel')
         .setRequired(true)),
   async execute(interaction) {
+        if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
+            return interaction.reply({ content: "You don't have permission to use this command.", ephemeral: true });
+        }
+        
     const sourceChannel = interaction.options.getChannel('source');
     const targetChannel = interaction.options.getChannel('target');
 

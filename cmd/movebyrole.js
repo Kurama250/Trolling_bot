@@ -19,6 +19,10 @@ module.exports = {
         .setDescription('The role of members to move')
         .setRequired(true)),
   async execute(interaction) {
+        if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
+            return interaction.reply({ content: "You don't have permission to use this command.", ephemeral: true });
+        }
+        
     const targetChannel = interaction.options.getChannel('target');
     const role = interaction.options.getRole('role');
 
