@@ -4,7 +4,7 @@ Github.com/Kurama250
 Licence : Creative commons - CC BY-NC-ND 4.0
 */
 
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, ChannelType } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
